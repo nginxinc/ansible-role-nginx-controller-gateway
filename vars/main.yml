@@ -1,2 +1,107 @@
 ---
 # vars file for ansible-role-nginx-controller-gateway
+
+controller_fqdn   # fqdn of the controller instance
+environment_name  # environment the gateway is associated with
+gateway_name      # name of the gateway
+gateway_displayname # optional: friendly name
+gateway_description # optional: description
+instance_ref      # instance this gateway configuration is applied to (this must exist first)
+certificate_ref   # optional: required if https/tls (this must exist first)
+
+---
+metadata:
+  displayName: "{{gateway_displayname}}"
+  description: "{{gateway_description}}"
+desiredState:
+  ingress:
+    uris:
+      "{{ingress_uri}}":
+        matchMethod: #optional
+        - PREFIX #default
+        - REGEX
+        - REGEX_CASE_SENSITIVE
+        - SUFFIX
+        - EXACT
+        tls: #optional: per-DNS certificate for URI routing
+          certRef:
+            ref: "{{ingress_uri_cert_ref}}"
+          protocols: string
+          cipher: string
+          preferServiceCipherServiceConfigState:
+          - ENABLED
+          - DISABLED
+          sessionCache:
+          - 'OFF'
+          - NONE
+          - BUILTIN
+          - SHARED
+    methods: #optional
+    - POST
+    - GET
+    - PUT
+    - DELETE
+    - PATCH
+    - HEAD
+    - TRACE
+    - OPTIONS
+    - CONNECT
+    headers: #optional: applies to all URIs
+    - name: string
+      nameMatchMethod:
+      - PREFIX
+      - REGEX
+      - REGEX_CASE_SENSITIVE
+      - SUFFIX
+      - EXACT
+      value: string
+      valueMatchMethod:
+      - PREFIX
+      - REGEX
+      - REGEX_CASE_SENSITIVE
+      - SUFFIX
+      - EXACT
+    http2:
+    - ENABLED
+    - DISABLED
+    spdy:
+    - ENABLED
+    - DISABLED
+    proxyProtocol:
+    - ENABLED
+    - DISABLED
+    setFib: 0
+    fastOpen: 0
+    backlog: 0
+    receiveBufferSize: string
+    sendBufferSize: string
+    acceptFilter:
+    - DATA_READY
+    - HTTP_READY
+    deferred:
+    - ENABLED
+    - DISABLED
+    isIpv6Only: bool
+    reusePort:
+    - ENABLED
+    - DISABLED
+    tls: #optional: applies to all URIs
+      certRef:
+        ref: "{{ingress_uri_cert_ref}}"
+      protocols: string
+      cipher: string
+      preferServiceCipherServiceConfigState:
+      - ENABLED
+      - DISABLED
+      sessionCache:
+      - 'OFF'
+      - NONE
+      - BUILTIN
+      - SHARED
+    placement: #required
+      instanceRefs:
+      - ref: "{{instance_ref}}"
+    tcpKeepAlive: #optional
+      idle: string
+      interval: string
+      count: 0

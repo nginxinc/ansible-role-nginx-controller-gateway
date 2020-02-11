@@ -1,2 +1,4 @@
 ---
 # defaults file for ansible-role-nginx-controller-gateway
+
+api_version: "api/v1"
