@@ -8,13 +8,16 @@
     - controller_fqdn
     - environment_name
     - controller_auth_token
+    - gateway.name
+    - ingress.uris
+    - ingress.placement.instanceRefs
 
 - name: Build JSON payload
   template: src={{gateway}}.j2 dest={{gateway}}.json
 
 - name: form the gateway url
   set_fact:
-    gateway_url: "https://{{controller_fqdn}}/{{api_version}}/services/environments/{{environment_name}}/gateways/{{gateway_name}}"
+    gateway_url: "https://{{controller_fqdn}}/{{api_version}}/services/environments/{{environment_name}}/gateways/{{gateway.name}}"
 
 - name: upsert gateway (create if absent, change if present)
   uri:

@@ -4,7 +4,13 @@ notes:
 {
     "metadata": {
         "displayName": "{{gateway.displayname}}",
-        "description": "{{gateway.description}}"
+        "description": "{{gateway.description}}",
+        "tags": [
+{% for tag in gateway.tags %}
+            "{{tag}}"{% if not loop.last %}, 
+{% endif %}
+{% endfor %}{{''}}
+        ]
     },
     "desiredState": {
         "ingress": {
@@ -17,7 +23,10 @@ notes:
                     "tls": {
 {% if uri.tls.certref.ref %}
                         "certRef": { "ref": "{{uri.tls.certref.ref}}" },
-                        "protocols": "{{uri.tls.protocols}}",
+{% for protocol in uri.tls.protocols %}
+                        "protocols": "{{protocol}}",{% if not loop.last %}, 
+{% endif %}
+{% endfor %}{{''}}
                         "cipher": "{{uri.tls.cipher}}",
                         "preferServiceCipherServiceConfigState": "{{uri.tls.preferServiceCipherServiceConfigState}}",
                         "sessionCache": "{{uri.tls.sessionCache}}"
@@ -90,7 +99,10 @@ notes:
             "tls": {
 {% if ingress.tls.certRef.ref %}
                 "certRef": { "ref": "{{uri.tls.certref.ref}}" },
-                "protocols": "{{uri.tls.protocols}}",
+{% for protocol in ingress.tls.protocols %}
+                "protocols": "{{protocol}}",{% if not loop.last %}, 
+{% endif %}
+{% endfor %}{{''}}
                 "cipher": "{{uri.tls.cipher}}",
                 "preferServiceCipherServiceConfigState": "{{uri.tls.preferServiceCipherServiceConfigState}}",
                 "sessionCache": "{{uri.tls.sessionCache}}"
