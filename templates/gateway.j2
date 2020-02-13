@@ -9,56 +9,102 @@ notes:
     "desiredState": {
         "ingress": {
             "uris": {
-                "{{ingress_uri}}": { 
-                    "matchMethod": [ "PREFIX", "REGEX", "REGEX_CASE_SENSITIVE", "SUFFIX", "EXACT" ],
+{% for uri in ingress.uris %}
+                "{{uri.ingress_uri}}": { 
+{% if uri.matchMethod %}
+                    "matchMethod": "{{uri.matchMethod}}",
+{% endif %}
                     "tls": {
-                        "certRef": { "ref": "{{ingress_uri_cert_ref}}" },
-                        "protocols": "string",
-                        "cipher": "string",
-                        "preferServiceCipherServiceConfigState": ["ENABLED", "DISABLED"],
-                        "sessionCache": ["OFF", "NONE", "BUILTIN", "SHARED"]
+{% if uri.tls.certref.ref %}
+                        "certRef": { "ref": "{{uri.tls.certref.ref}}" },
+                        "protocols": "{{uri.tls.protocols}}",
+                        "cipher": "{{uri.tls.cipher}}",
+                        "preferServiceCipherServiceConfigState": "{{uri.tls.preferServiceCipherServiceConfigState}}",
+                        "sessionCache": "{{uri.tls.sessionCache}}"
+{% endif %}
                     }
-                }
+                }{% if not loop.last %},
+{% endif %}
+{% endfor %}{{''}}
             },
+{% if ingress.methods %}
             "methods": [ "POST", "GET", "PUT", "DELETE", "PATCH", "HEAD", "TRACE", "OPTIONS", "CONNECT" ],
+{% endif %}
+{% if ingress.headers %}
             "headers": [
+{% for header in ingress.headers %}
                 {
-                    "name": "string",
-                    "nameMatchMethod": [ "PREFIX", "REGEX", "REGEX_CASE_SENSITIVE", "SUFFIX", "EXACT" ],
-                    "value": "string",
-                    "valueMatchMethod": [ "PREFIX", "REGEX", "REGEX_CASE_SENSITIVE", "SUFFIX", "EXACT" ]
-                }
+{% if header.name %}
+                    "name": "{{header.name}}",
+                    "nameMatchMethod": "{{header.nameMatchMethod}}"
+{% elseif header.value %}
+                    "value": "{{header.value}}",
+                    "valueMatchMethod": "{{header.valueMatchMethod}}"
+{% endif %}
+                }{% if not loop.last %},
+{% endfor %}{{''}}
             ],
-            "http2": ["ENABLED", "DISABLED"],
-            "spdy": ["ENABLED", "DISABLED"],
-            "proxyProtocol": ["ENABLED", "DISABLED"],
-            "setFib": 0,
-            "fastOpen": 0,
-            "backlog": 0,
-            "receiveBufferSize": "string",
-            "sendBufferSize": "string",
-            "acceptFilter": ["DATA_READY", "HTTP_READY"],
-            "deferred": ["ENABLED", "DISABLED"],
-            "isIpv6Only": "bool",
-            "reusePort": ["ENABLED", "DISABLED"],
+{% endif %}
+{% if ingress.http2 %}
+            "http2": "{{ingress.http2}}",
+{% endif %}
+{% if ingress.spdy %}
+            "spdy": "{{ingress.spdy}}",
+{% endif %}
+{% if ingress.proxyProtocol %}
+            "proxyProtocol": "{{ingress.proxyProtocol}}",
+{% endif %}
+{% if ingress.setFib %}
+            "setFib": "{{ingress.setFib}}",
+{% endif %}
+{% if ingress.fastOpen %}
+            "fastOpen": "{{ingress.fastOpen}}",
+{% endif %}
+{% if ingress.backlog %}
+            "backlog": "{{ingress.backlog}}",
+{% endif %}
+{% if ingress.receiveBufferSize %}
+            "receiveBufferSize": "{{ingress.receiveBufferSize}}",
+{% endif %}
+{% if ingress.sendBufferSize %}
+            "sendBufferSize": "{{ingress.sendBufferSize}}",
+{% endif %}
+{% if ingress.acceptFilter %}
+            "acceptFilter": "{{ingress.acceptFilter}}",
+{% endif %}
+{% if ingress.deferred %}
+            "deferred": "{{ingress.deferred}}",
+{% endif %}
+{% if ingress.isIpv6Only %}
+            "isIpv6Only": "{{ingress.isIpv6Only}}",
+{% endif %}
+{% if ingress.reusePort %}
+            "reusePort": "{{ingress.reusePort}}"],
+{% endif %}
             "tls": {
-                "certRef": { "ref": "{{ingress_uri_cert_ref}}" },
-                "protocols": "string",
-                "cipher": "string",
-                "preferServiceCipherServiceConfigState": ["ENABLED", "DISABLED"],
-                "sessionCache": ["OFF", "NONE", "BUILTIN", "SHARED"]
+{% if ingress.tls.certRef.ref %}
+                "certRef": { "ref": "{{uri.tls.certref.ref}}" },
+                "protocols": "{{uri.tls.protocols}}",
+                "cipher": "{{uri.tls.cipher}}",
+                "preferServiceCipherServiceConfigState": "{{uri.tls.preferServiceCipherServiceConfigState}}",
+                "sessionCache": "{{uri.tls.sessionCache}}"
+{% endif %}
             },
-            "placement": {
-                "instanceRefs": [
-                    {
-                        "ref": "{{instance_ref}}"
-                    }                    
-                ]
-            },
+{% if ingress.tcpKeepAlive.idle %}
             "tcpKeepAlive": {
                 "idle": "string",
                 "interval": "string",
                 "count": 0
+            },
+{% endif %}
+            "placement": {
+                "instanceRefs": [
+{% for instanceRef in ingress.placement.instanceRefs %}
+                    {
+                        "ref": "{{instanceRef}}"
+                    }{% if not loop.last %},
+{% endfor %}{{''}}
+                ]
             }
         }
     }
