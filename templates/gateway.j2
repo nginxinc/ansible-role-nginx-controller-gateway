@@ -28,7 +28,12 @@ notes:
 {% endfor %}{{''}}
             },
 {% if ingress.methods %}
-            "methods": [ "POST", "GET", "PUT", "DELETE", "PATCH", "HEAD", "TRACE", "OPTIONS", "CONNECT" ],
+            "methods": [
+{% for method in ingress.methods %}
+                "{{method}}"{% if not loop.last %}, 
+{% endif %}
+{% endfor %}{{''}}
+            ],
 {% endif %}
 {% if ingress.headers %}
             "headers": [
@@ -42,6 +47,7 @@ notes:
                     "valueMatchMethod": "{{header.valueMatchMethod}}"
 {% endif %}
                 }{% if not loop.last %},
+{% endif %}
 {% endfor %}{{''}}
             ],
 {% endif %}
@@ -103,6 +109,7 @@ notes:
                     {
                         "ref": "{{instanceRef}}"
                     }{% if not loop.last %},
+{% endif %}
 {% endfor %}{{''}}
                 ]
             }
