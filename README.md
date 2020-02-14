@@ -119,7 +119,7 @@ Example Playbook
             ref: "/services/environments/lending-prod/certs/star.acmefinancial.net"
           protocols:
           - "TLSv1.3"
-          - "TLSv1.2
+          - "TLSv1.2"
         placement:
           instanceRefs:
           - "/infrastructure/locations/unspecified/instances/2"
