@@ -3,28 +3,31 @@ notes:
 #}
 {
     "metadata": {
-        "displayName": "{{gateway.displayname}}",
+        "name": "{{gateway.name}}"
+        "displayName": "{{gateway.displayName}}",
         "description": "{{gateway.description}}",
+{% if gateway.tags[0] is defined %}
         "tags": [
 {% for tag in gateway.tags %}
             "{{tag}}"{% if not loop.last %}, 
 {% endif %}
 {% endfor %}{{''}}
         ]
+{% endif %}
     },
     "desiredState": {
         "ingress": {
             "uris": {
 {% for uri in ingress.uris %}
-                "{{uri.ingress_uri}}": { 
-{% if uri.matchMethod %}
+                "{{uri}}": { 
+{% if uri.matchMethod is defined %}
                     "matchMethod": "{{uri.matchMethod}}",
 {% endif %}
                     "tls": {
-{% if uri.tls.certref.ref %}
+{% if uri.tls.certref.ref is defined %}
                         "certRef": { "ref": "{{uri.tls.certref.ref}}" },
 {% for protocol in uri.tls.protocols %}
-                        "protocols": "{{protocol}}",{% if not loop.last %}, 
+                        "protocols": "{{protocol}}"{% if not loop.last %}, 
 {% endif %}
 {% endfor %}{{''}}
                         "cipher": "{{uri.tls.cipher}}",
@@ -36,7 +39,7 @@ notes:
 {% endif %}
 {% endfor %}{{''}}
             },
-{% if ingress.methods %}
+{% if ingress.methods is defined %}
             "methods": [
 {% for method in ingress.methods %}
                 "{{method}}"{% if not loop.last %}, 
@@ -44,14 +47,14 @@ notes:
 {% endfor %}{{''}}
             ],
 {% endif %}
-{% if ingress.headers %}
+{% if ingress.headers is defined %}
             "headers": [
 {% for header in ingress.headers %}
                 {
-{% if header.name %}
+{% if header.name is defined %}
                     "name": "{{header.name}}",
                     "nameMatchMethod": "{{header.nameMatchMethod}}"
-{% elseif header.value %}
+{% elif header.value is defined %}
                     "value": "{{header.value}}",
                     "valueMatchMethod": "{{header.valueMatchMethod}}"
 {% endif %}
@@ -60,47 +63,47 @@ notes:
 {% endfor %}{{''}}
             ],
 {% endif %}
-{% if ingress.http2 %}
+{% if ingress.http2 is defined %}
             "http2": "{{ingress.http2}}",
 {% endif %}
-{% if ingress.spdy %}
+{% if ingress.spdy is defined %}
             "spdy": "{{ingress.spdy}}",
 {% endif %}
-{% if ingress.proxyProtocol %}
+{% if ingress.proxyProtocol is defined %}
             "proxyProtocol": "{{ingress.proxyProtocol}}",
 {% endif %}
-{% if ingress.setFib %}
+{% if ingress.setFib is defined %}
             "setFib": "{{ingress.setFib}}",
 {% endif %}
-{% if ingress.fastOpen %}
+{% if ingress.fastOpen is defined %}
             "fastOpen": "{{ingress.fastOpen}}",
 {% endif %}
-{% if ingress.backlog %}
+{% if ingress.backlog is defined %}
             "backlog": "{{ingress.backlog}}",
 {% endif %}
-{% if ingress.receiveBufferSize %}
+{% if ingress.receiveBufferSize is defined %}
             "receiveBufferSize": "{{ingress.receiveBufferSize}}",
 {% endif %}
-{% if ingress.sendBufferSize %}
+{% if ingress.sendBufferSize is defined %}
             "sendBufferSize": "{{ingress.sendBufferSize}}",
 {% endif %}
-{% if ingress.acceptFilter %}
+{% if ingress.acceptFilter is defined %}
             "acceptFilter": "{{ingress.acceptFilter}}",
 {% endif %}
-{% if ingress.deferred %}
+{% if ingress.deferred is defined %}
             "deferred": "{{ingress.deferred}}",
 {% endif %}
-{% if ingress.isIpv6Only %}
+{% if ingress.isIpv6Only is defined %}
             "isIpv6Only": "{{ingress.isIpv6Only}}",
 {% endif %}
-{% if ingress.reusePort %}
+{% if ingress.reusePort is defined %}
             "reusePort": "{{ingress.reusePort}}"],
 {% endif %}
             "tls": {
-{% if ingress.tls.certRef.ref %}
+{% if ingress.tls.certRef.ref is defined %}
                 "certRef": { "ref": "{{uri.tls.certref.ref}}" },
 {% for protocol in ingress.tls.protocols %}
-                "protocols": "{{protocol}}",{% if not loop.last %}, 
+                "protocols": "{{protocol}}",{% if not loop.last %},
 {% endif %}
 {% endfor %}{{''}}
                 "cipher": "{{uri.tls.cipher}}",
@@ -108,7 +111,7 @@ notes:
                 "sessionCache": "{{uri.tls.sessionCache}}"
 {% endif %}
             },
-{% if ingress.tcpKeepAlive.idle %}
+{% if ingress.tcpKeepAlive.idle is defined %}
             "tcpKeepAlive": {
                 "idle": "string",
                 "interval": "string",

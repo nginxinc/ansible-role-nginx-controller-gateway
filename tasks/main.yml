@@ -13,7 +13,7 @@
     - ingress.placement.instanceRefs
 
 - name: Build JSON payload
-  template: src={{gateway}}.j2 dest={{gateway}}.json
+  template: src=gateway.j2 dest=gateway.json
 
 - name: form the gateway url
   set_fact:
@@ -21,16 +21,17 @@
 
 - name: upsert gateway (create if absent, change if present)
   uri:
-   url: "{{ gateway_url }}"
-   method: "PUT"
-   body: "{{(lookup('file','{{gateway}}.json'))}}"
-   body_format: json
-   status_code:
-   - 200
-   return_content: yes
-   validate_certs: no
-  headers:
-    Cookie: "{{controller_auth_token}}"
+    url: "{{ gateway_url }}"
+    method: "PUT"
+    body: "{{(lookup('file','gateway.json'))}}"
+    body_format: json
+    status_code:
+    - 200
+    - 201
+    return_content: yes
+    validate_certs: no
+    headers:
+      Cookie: "{{controller_auth_token}}"
   register: gateway_status
 
 - name: show gateway status
@@ -44,26 +45,21 @@
 
 - name: Confirm component is provisioned and not errored
   uri:
-   url: "{{ gateway_url }}"
-   method: "GET"
-   body_format: json
-   status_code:
-   - 200
-   return_content: yes
-   validate_certs: no
-  headers:
-    Cookie: "{{ controller_auth_token }}"
+    url: "{{ gateway_url }}"
+    method: "GET"
+    body_format: json
+    status_code:
+    - 200
+    return_content: yes
+    validate_certs: no
+    headers:
+      Cookie: "{{ controller_auth_token }}"
   register: gateway_status
-  # error handling needs work
-  until: (gateway_status is defined ) and
-         ((( service_stats.json.status.desired != None ) and ( "NOT_APPLICABLE" in service_stats.json.status.desired.phase )) or
-         (( application_service.json.status.active != None ) and ( "PROVISIONED" in application_service.json.status.active.phase )) or
-         (( application_service.json.status.desired != None ) and ( "PROVISIONED" in application_service.json.status.desired.phase )))
-  retries: 85
-  delay: 10
-  # response behavior notes
-  #
-  #
+  until: ( gateway_status is defined ) and
+         ( gateway_status.json.currentStatus.state.selfConfigState.isConfigured == true )
+  retries: 25
+  delay: 2
+  failed_when: ( gateway_status.json.currentStatus.state.selfConfigState.isError == true )
 
 - name: show gateway details
   debug: 
