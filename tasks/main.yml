@@ -34,7 +34,7 @@
       Cookie: "{{controller_auth_token}}"
   register: gateway_status
 
-- name: show gateway status
+- name: show gateway create status
   debug: 
     msg: "{{ gateway_status }}"
 
@@ -54,13 +54,13 @@
     validate_certs: no
     headers:
       Cookie: "{{ controller_auth_token }}"
-  register: gateway_status
-  until: ( gateway_status is defined ) and
-         ( gateway_status.json.currentStatus.state.selfConfigState.isConfigured == true )
-  retries: 25
+  register: gateway_current_status
+  until: ( gateway_current_status is defined ) and
+         ( gateway_current_status.json.currentStatus.state.selfConfigState.isConfiguring != True )
+  retries: 50
   delay: 2
-  failed_when: ( gateway_status.json.currentStatus.state.selfConfigState.isError == true )
+  failed_when: ( gateway_current_status.json.currentStatus.state.selfConfigState.isError == True )
 
 - name: show gateway details
   debug: 
-    msg: "{{ gateway_status }}"
+    msg: "{{ gateway_current_status }}"

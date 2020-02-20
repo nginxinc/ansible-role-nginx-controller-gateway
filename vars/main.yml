@@ -14,7 +14,7 @@
 
 # ingress:
 #   uris: # array of URIs
-#   - ingress_uri: #one URI for the gateway to service http://www.example.com
+#   - uri: #one URI for the gateway to service http://www.example.com
 #       matchMethod: PREFIX #optional: PREFIX,REGEX,REGEX_CASE_SENSITIVE,SUFFIX,EXACT
 #       tls: #optional section: per-DNS certificate for URI routing
 #         certRef:

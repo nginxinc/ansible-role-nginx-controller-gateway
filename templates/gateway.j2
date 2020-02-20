@@ -4,128 +4,146 @@ notes:
 {
     "metadata": {
         "name": "{{gateway.name}}"
-        "displayName": "{{gateway.displayName}}",
-        "description": "{{gateway.description}}",
-{% if gateway.tags[0] is defined %}
-        "tags": [
-{% for tag in gateway.tags %}
-            "{{tag}}"{% if not loop.last %}, 
-{% endif %}
-{% endfor %}{{''}}
+    {% if gateway.displayName is defined %}
+        ,"displayName": "{{gateway.displayName}}"
+    {% endif %}
+    {% if gateway.description is defined %}
+        ,"description": "{{gateway.description}}"
+    {% endif %}
+    {% if gateway.tags[0] is defined %}
+        ,"tags": [
+        {% for tag in gateway.tags %}
+            "{{tag}}"{% if not loop.last %},{% endif %}
+        {% endfor %}{{''}}
         ]
-{% endif %}
+    {% endif %}
     },
     "desiredState": {
         "ingress": {
             "uris": {
-{% for uri in ingress.uris %}
+    {% for uri in ingress.uris %}
                 "{{uri}}": { 
-{% if uri.matchMethod is defined %}
+        {% if uri.matchMethod is defined %}
                     "matchMethod": "{{uri.matchMethod}}",
-{% endif %}
+        {% endif %}
+        {% if uri.tls.certRef.ref is defined %}
                     "tls": {
-{% if uri.tls.certref.ref is defined %}
-                        "certRef": { "ref": "{{uri.tls.certref.ref}}" },
-{% for protocol in uri.tls.protocols %}
-                        "protocols": "{{protocol}}"{% if not loop.last %}, 
-{% endif %}
-{% endfor %}{{''}}
-                        "cipher": "{{uri.tls.cipher}}",
-                        "preferServiceCipherServiceConfigState": "{{uri.tls.preferServiceCipherServiceConfigState}}",
-                        "sessionCache": "{{uri.tls.sessionCache}}"
-{% endif %}
+                        "certRef": { "ref": "{{uri.tls.certRef.ref}}" }
+            {% if uri.tls.protocols[0] is defined %}
+                        ,"protocols": [
+                {% for protocol in uri.tls.protocols %}
+                            "{{protocol}}"{% if not loop.last %},{% endif %}
+                {% endfor %}{{''}}
+                        ]
+            {% endif %}
+            {% if uri.tls.cipher is defined %}
+                        ,"cipher": "{{uri.tls.cipher}}"
+            {% endif %}
+            {% if uri.tls.preferServiceCipherServiceConfigState is defined %}
+                        ,"preferServiceCipherServiceConfigState": "{{uri.tls.preferServiceCipherServiceConfigState}}"
+            {% endif %}
+            {% if uri.tls.sessionCache is defined %}
+                        ,"sessionCache": "{{uri.tls.sessionCache}}"
+            {% endif %}
                     }
-                }{% if not loop.last %},
-{% endif %}
-{% endfor %}{{''}}
-            },
-{% if ingress.methods is defined %}
-            "methods": [
-{% for method in ingress.methods %}
-                "{{method}}"{% if not loop.last %}, 
-{% endif %}
-{% endfor %}{{''}}
-            ],
-{% endif %}
-{% if ingress.headers is defined %}
-            "headers": [
-{% for header in ingress.headers %}
+        {% endif %}
+                }{% if not loop.last %},{% endif %}
+    {% endfor %}{{''}}
+            }
+    {% if ingress.methods is defined %}
+            ,"methods": [
+        {% for method in ingress.methods %}
+                "{{method}}"{% if not loop.last %},{% endif %}
+        {% endfor %}{{''}}
+            ]
+    {% endif %}
+    {% if ingress.headers is defined %}
+            ,"headers": [
+        {% for header in ingress.headers %}
                 {
-{% if header.name is defined %}
+            {% if header.name is defined %}
                     "name": "{{header.name}}",
                     "nameMatchMethod": "{{header.nameMatchMethod}}"
-{% elif header.value is defined %}
+            {% endif %}
+            {% if header.value is defined %}
                     "value": "{{header.value}}",
                     "valueMatchMethod": "{{header.valueMatchMethod}}"
-{% endif %}
-                }{% if not loop.last %},
-{% endif %}
-{% endfor %}{{''}}
-            ],
-{% endif %}
-{% if ingress.http2 is defined %}
-            "http2": "{{ingress.http2}}",
-{% endif %}
-{% if ingress.spdy is defined %}
-            "spdy": "{{ingress.spdy}}",
-{% endif %}
-{% if ingress.proxyProtocol is defined %}
-            "proxyProtocol": "{{ingress.proxyProtocol}}",
-{% endif %}
-{% if ingress.setFib is defined %}
-            "setFib": "{{ingress.setFib}}",
-{% endif %}
-{% if ingress.fastOpen is defined %}
-            "fastOpen": "{{ingress.fastOpen}}",
-{% endif %}
-{% if ingress.backlog is defined %}
-            "backlog": "{{ingress.backlog}}",
-{% endif %}
-{% if ingress.receiveBufferSize is defined %}
-            "receiveBufferSize": "{{ingress.receiveBufferSize}}",
-{% endif %}
-{% if ingress.sendBufferSize is defined %}
-            "sendBufferSize": "{{ingress.sendBufferSize}}",
-{% endif %}
-{% if ingress.acceptFilter is defined %}
-            "acceptFilter": "{{ingress.acceptFilter}}",
-{% endif %}
-{% if ingress.deferred is defined %}
-            "deferred": "{{ingress.deferred}}",
-{% endif %}
-{% if ingress.isIpv6Only is defined %}
-            "isIpv6Only": "{{ingress.isIpv6Only}}",
-{% endif %}
-{% if ingress.reusePort is defined %}
-            "reusePort": "{{ingress.reusePort}}"],
-{% endif %}
-            "tls": {
-{% if ingress.tls.certRef.ref is defined %}
-                "certRef": { "ref": "{{uri.tls.certref.ref}}" },
-{% for protocol in ingress.tls.protocols %}
-                "protocols": "{{protocol}}",{% if not loop.last %},
-{% endif %}
-{% endfor %}{{''}}
-                "cipher": "{{uri.tls.cipher}}",
-                "preferServiceCipherServiceConfigState": "{{uri.tls.preferServiceCipherServiceConfigState}}",
-                "sessionCache": "{{uri.tls.sessionCache}}"
-{% endif %}
-            },
-{% if ingress.tcpKeepAlive.idle is defined %}
-            "tcpKeepAlive": {
+            {% endif %}
+                }{% if not loop.last %},{% endif %}
+        {% endfor %}{{''}}
+            ]
+    {% endif %}
+    {% if ingress.http2 is defined %}
+            ,"http2": "{{ingress.http2}}"
+    {% endif %}
+    {% if ingress.spdy is defined %}
+            ,"spdy": "{{ingress.spdy}}"
+    {% endif %}
+    {% if ingress.proxyProtocol is defined %}
+            ,"proxyProtocol": "{{ingress.proxyProtocol}}"
+    {% endif %}
+    {% if ingress.setFib is defined %}
+            ,"setFib": "{{ingress.setFib}}"
+    {% endif %}
+    {% if ingress.fastOpen is defined %}
+            ,"fastOpen": "{{ingress.fastOpen}}"
+    {% endif %}
+    {% if ingress.backlog is defined %}
+            ,"backlog": "{{ingress.backlog}}"
+    {% endif %}
+    {% if ingress.receiveBufferSize is defined %}
+            ,"receiveBufferSize": "{{ingress.receiveBufferSize}}"
+    {% endif %}
+    {% if ingress.sendBufferSize is defined %}
+            ,"sendBufferSize": "{{ingress.sendBufferSize}}"
+    {% endif %}
+    {% if ingress.acceptFilter is defined %}
+            ,"acceptFilter": "{{ingress.acceptFilter}}"
+    {% endif %}
+    {% if ingress.deferred is defined %}
+            ,"deferred": "{{ingress.deferred}}"
+    {% endif %}
+    {% if ingress.isIpv6Only is defined %}
+            ,"isIpv6Only": "{{ingress.isIpv6Only}}"
+    {% endif %}
+    {% if ingress.reusePort is defined %}
+            ,"reusePort": "{{ingress.reusePort}}"]
+    {% endif %}
+    {% if ingress.tls.certRef.ref is defined %}
+            ,"tls": {
+                "certRef": { "ref": "{{ingress.tls.certRef.ref}}" }
+    {% endif %}
+    {% if ingress.tls.protocols[0] is defined %}                
+                ,"protocols": [
+        {% for protocol in ingress.tls.protocols %}
+                    "{{protocol}}"{% if not loop.last %},{% endif %}
+        {% endfor %}{{''}}
+                ]
+    {% endif %}
+    {% if ingress.tls.cipher is defined %}
+                ,"cipher": "{{ingress.tls.cipher}}"
+                {% endif %}
+    {% if ingress.tls.preferServiceCipherServiceConfigState is defined %}
+                ,"preferServiceCipherServiceConfigState": "{{ingress.tls.preferServiceCipherServiceConfigState}}"
+    {% endif %}
+    {% if ingress.tls.sessionCache is defined %}
+                ,"sessionCache": "{{ingress.tls.sessionCache}}"
+    {% endif %}
+            }
+    {% if ingress.tcpKeepAlive.idle is defined %}
+            ,"tcpKeepAlive": {
                 "idle": "string",
                 "interval": "string",
                 "count": 0
-            },
-{% endif %}
-            "placement": {
+            }
+    {% endif %}
+            ,"placement": {
                 "instanceRefs": [
-{% for instanceRef in ingress.placement.instanceRefs %}
+    {% for instanceRef in ingress.placement.instanceRefs %}
                     {
                         "ref": "{{instanceRef}}"
-                    }{% if not loop.last %},
-{% endif %}
-{% endfor %}{{''}}
+                    }{% if not loop.last %},{% endif %}
+    {% endfor %}{{''}}
                 ]
             }
         }
