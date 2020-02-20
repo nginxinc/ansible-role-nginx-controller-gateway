@@ -9,18 +9,18 @@
                 "http://merch.dev.acmefinancial.net": {
                 },
                 "https://merch.dev.acmefinancial.net": {
-                }                   
+                }
             },
             "tls": {
                 "certRef": {
                     "ref": "/services/environments/retail-dev/certs/merch.acmefinancial.net"
-                }            
-            },               
+                }
+            },
             "placement": {
                 "instanceRefs": [
                     {
                         "ref": "/infrastructure/locations/unspecified/instances/12"
-                    }                    
+                    }
                 ]
             }
         }

@@ -1,10 +1,8 @@
 ---
-# tasks file for ansible-role-nginx-controller-gateway
-
 - name: Fail if required variables are not defined
   assert:
     that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
-  with_items:
+  loop:
     - controller_fqdn
     - environment_name
     - controller_auth_token
@@ -13,35 +11,36 @@
     - ingress.placement.instanceRefs
 
 - name: Build JSON payload
-  template: src=gateway.j2 dest=gateway.json
+  template:
+    src: gateway.j2
+    dest: gateway.json
 
-- name: form the gateway url
+- name: Form the gateway url
   set_fact:
-    gateway_url: "https://{{controller_fqdn}}/{{api_version}}/services/environments/{{environment_name}}/gateways/{{gateway.name}}"
+    gateway_url: "https://{{ controller_fqdn }}/{{ api_version }}/services/environments/{{ environment_name }}/gateways/{{ gateway.name }}"
 
-- name: upsert gateway (create if absent, change if present)
+- name: Upsert gateway (create if absent, change if present)
   uri:
     url: "{{ gateway_url }}"
     method: "PUT"
-    body: "{{(lookup('file','gateway.json'))}}"
+    body: "{{ (lookup('file','gateway.json')) }}"
     body_format: json
     status_code:
-    - 200
-    - 201
+      - 200
+      - 201
     return_content: yes
     validate_certs: no
     headers:
-      Cookie: "{{controller_auth_token}}"
+      Cookie: "{{ controller_auth_token }}"
   register: gateway_status
 
-- name: show gateway create status
-  debug: 
+- name: Show gateway creation status
+  debug:
     msg: "{{ gateway_status }}"
 
-# pause to give the system a moment to initiate the change
-- name: pause
+- name: Pause while system initiates changes
   pause:
-   seconds: 2
+    seconds: 2
 
 - name: Confirm component is provisioned and not errored
   uri:
@@ -49,18 +48,18 @@
     method: "GET"
     body_format: json
     status_code:
-    - 200
+      - 200
     return_content: yes
     validate_certs: no
     headers:
       Cookie: "{{ controller_auth_token }}"
   register: gateway_current_status
   until: ( gateway_current_status is defined ) and
-         ( gateway_current_status.json.currentStatus.state.selfConfigState.isConfiguring != True )
+         ( not gateway_current_status.json.currentStatus.state.selfConfigState.isConfiguring )
   retries: 50
   delay: 2
-  failed_when: ( gateway_current_status.json.currentStatus.state.selfConfigState.isError == True )
+  failed_when: gateway_current_status.json.currentStatus.state.selfConfigState.isError
 
-- name: show gateway details
-  debug: 
+- name: Show gateway details
+  debug:
     msg: "{{ gateway_current_status }}"
