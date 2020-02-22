@@ -4,16 +4,11 @@
     that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
   loop:
     - controller_fqdn
-    - environment_name
     - controller_auth_token
-    - gateway.name
-    - ingress.uris
-    - ingress.placement.instanceRefs
-
-- name: Build JSON payload
-  template:
-    src: gateway.j2
-    dest: gateway.json
+    - environmentName
+    - gateway.metadata.name
+    - gateway.ingress.uris
+    - gateway.ingress.placement.instanceRefs
 
 - name: Form the gateway url
   set_fact:
@@ -23,7 +18,7 @@
   uri:
     url: "{{ gateway_url }}"
     method: "PUT"
-    body: "{{ (lookup('file','gateway.json')) }}"
+    body: "{{ gateway }}"
     body_format: json
     status_code:
       - 200

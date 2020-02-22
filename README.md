@@ -46,32 +46,32 @@ Example Playbook
       vars:
         controller_fqdn: "controller.example.local"
         environment_name: "production-us-west"
-        # controller_auth_token: output by previous role in example
         gateway:
-          name: lending
-          displayName: "Shared Public Lending BU Gateway"
-          description: "Routes all non special Lending applications"
-          tags:
-            - production
-            - us-west
-            - lending
-        ingress:
-          uris:
-            - "http://mortgage.acmefinancial.net"
-            - "https://mortgage.acmefinancial.net"
-            - "http://ratecalculator.acmefinancial.net"
-            - "https://ratecalculator.acmefinancial.net"
-          tls:
-            certRef:
-              ref: "/services/environments/lending-prod/certs/star.acmefinancial.net"
-            protocols:
-              - "TLSv1.3"
-              - "TLSv1.2"
-          placement:
-            instanceRefs:
-              - "/infrastructure/locations/unspecified/instances/2"
-              - "/infrastructure/locations/unspecified/instances/4"
+          metadata:
+            name: lending
+            displayName: "Shared Public Lending BU Gateway"
+            description: "Routes all non special Lending applications"
+          desiredState:
+            ingress:
+              uris:
+                "http://mortgage.acmefinancial.net": {}
+                "https://mortgage.acmefinancial.net": {}
+                "http://ratecalculator.acmefinancial.net": {}
+                "https://ratecalculator.acmefinancial.net": {}
+              tls:
+                certRef:
+                  ref: "/services/environments/lending-prod/certs/star.acmefinancial.net"
+                protocols:
+                  - "TLSv1.3"
+                  - "TLSv1.2"
+              placement:
+                instanceRefs:
+                  - ref: "/infrastructure/locations/unspecified/instances/2"
+                  - ref: "/infrastructure/locations/unspecified/instances/4"
 ```
+
+ansible-playbook nginx_controller_gateway.yaml -e "user_email=brian@example.com user_password=notsecure controller_fqdn=controller.example.local" 
+ansible-playbook nginx_controller_gateway.yaml -e "@nginx_controller_gateway_vars.yaml"
 
 License
 -------
