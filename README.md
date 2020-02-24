@@ -6,16 +6,19 @@ Upsert (create and update) gateways in NGINX Controller to support ingress for A
 Requirements
 ------------
 
+[NGINX Controller](https://www.nginx.com/products/nginx-controller/)
+
 Role Variables
 --------------
 
 ### Required Variables
 
-`controller_fqdn` - FQDN of the controller instance
-`environment_name` - Environment the gateway is associated with
-`gateway.name` - Name of the gateway
-`ingress.uris` - URI for the gateway to service
-`ingress.placement` - Instance(s) this gateway configuration is applied to (these must exist first)
+`controller_fqdn` - FQDN of the NGINX Controller instance
+`controller_auth_token` - Authentication token for NGINX Controller
+`environmentName` - Environment the gateway is associated with
+`gateway.metadata.name` - Name of the gateway
+`gateway.ingress.uris` - URI for the gateway to service
+`gateway.ingress.placement.instanceRefs` - Instance(s) this gateway configuration is applied to (these must exist first)
 
 ### Template Variables
 
@@ -57,10 +60,14 @@ To use this role you can create a playbook such as the following (let's name it 
           desiredState:
             ingress:
               uris:
-                "http://mortgage.acmefinancial.net": {}
-                "https://mortgage.acmefinancial.net": {}
-                "http://ratecalculator.acmefinancial.net": {}
-                "https://ratecalculator.acmefinancial.net": {}
+                "http://mortgage.acmefinancial.net":
+                  {}
+                "https://mortgage.acmefinancial.net":
+                  {}
+                "http://ratecalculator.acmefinancial.net":
+                  {}
+                "https://ratecalculator.acmefinancial.net":
+                  {}
               tls:
                 certRef:
                   ref: "/services/environments/lending-prod/certs/star.acmefinancial.net"
