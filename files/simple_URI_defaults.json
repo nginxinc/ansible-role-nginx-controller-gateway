@@ -6,10 +6,8 @@
     "desiredState": {
         "ingress": {
             "uris": {
-                "http://merch.dev.acmefinancial.net": {
-                },
-                "https://merch.dev.acmefinancial.net": {
-                }
+                "http://merch.dev.acmefinancial.net": {},
+                "https://merch.dev.acmefinancial.net": {}
             },
             "tls": {
                 "certRef": {

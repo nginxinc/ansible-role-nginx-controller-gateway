@@ -27,6 +27,8 @@ Dependencies
 Example Playbook
 ----------------
 
+To use this role you can create a playbook such as the following (let's name it `nginx_controller_gateway.yaml` for the purposes of this example).
+
 ```yaml
 - hosts: localhost
   gather_facts: no
@@ -44,7 +46,8 @@ Example Playbook
       include_role:
         name: nginx_controller_gateway
       vars:
-        controller_fqdn: "controller.example.local"
+        # controller_auth_token: output by previous role in example
+        controller_fqdn: "controller.mydomain.com"
         environment_name: "production-us-west"
         gateway:
           metadata:
@@ -54,10 +57,10 @@ Example Playbook
           desiredState:
             ingress:
               uris:
-                "http://mortgage.acmefinancial.net": {}
-                "https://mortgage.acmefinancial.net": {}
-                "http://ratecalculator.acmefinancial.net": {}
-                "https://ratecalculator.acmefinancial.net": {}
+                - "http://mortgage.acmefinancial.net": {}
+                - "https://mortgage.acmefinancial.net": {}
+                - "http://ratecalculator.acmefinancial.net": {}
+                - "https://ratecalculator.acmefinancial.net": {}
               tls:
                 certRef:
                   ref: "/services/environments/lending-prod/certs/star.acmefinancial.net"
@@ -70,8 +73,11 @@ Example Playbook
                   - ref: "/infrastructure/locations/unspecified/instances/4"
 ```
 
-ansible-playbook nginx_controller_gateway.yaml -e "user_email=brian@example.com user_password=notsecure controller_fqdn=controller.example.local" 
-ansible-playbook nginx_controller_gateway.yaml -e "@nginx_controller_gateway_vars.yaml"
+You can then run `ansible-playbook nginx_controller_gateway.yaml` to execute the playbook.
+
+Alternatively, you can also pass/override any variables at run time using the `--extra-vars` or `-e` flag like so `ansible-playbook nginx_controller_gateway.yaml -e "user_email=brian@example.com user_password=notsecure controller_fqdn=controller.example.local"`
+
+You can also pass/override any variables by passing a `yaml` file containing any number of variables like so `ansible-playbook nginx_controller_gateway.yaml -e "@nginx_controller_gateway_vars.yaml"`
 
 License
 -------

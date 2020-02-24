@@ -6,10 +6,8 @@
     "desiredState": {
         "ingress": {
             "uris": {
-                "http://*.acmefinancial.net": {
-                },
-                "https://*.acmefinancial.net": {
-                }
+                "http://*.acmefinancial.net": {},
+                "https://*.acmefinancial.net": {}
             },
             "tls": {
                 "certRef": {
