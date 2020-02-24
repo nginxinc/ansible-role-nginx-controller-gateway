@@ -14,10 +14,15 @@ Role Variables
 ### Required Variables
 
 `controller_fqdn` - FQDN of the NGINX Controller instance
+
 `controller_auth_token` - Authentication token for NGINX Controller
+
 `environmentName` - Environment the gateway is associated with
+
 `gateway.metadata.name` - Name of the gateway
+
 `gateway.ingress.uris` - URI for the gateway to service
+
 `gateway.ingress.placement.instanceRefs` - Instance(s) this gateway configuration is applied to (these must exist first)
 
 ### Template Variables
@@ -39,7 +44,7 @@ To use this role you can create a playbook such as the following (let's name it 
   tasks:
     - name: Retrieve the NGINX Controller auth token
       include_role:
-        name: nginx_controller_generate_token
+        name: nginxinc.nginx-controller-generate-token
       vars:
         user_email: "user@example.com"
         user_password: "mySecurePassword"
@@ -47,7 +52,7 @@ To use this role you can create a playbook such as the following (let's name it 
 
     - name: Create a gateway
       include_role:
-        name: nginx_controller_gateway
+        name: nginxinc.nginx-controller-gateway
       vars:
         # controller_auth_token: output by previous role in example
         controller_fqdn: "controller.mydomain.com"
@@ -94,4 +99,8 @@ License
 Author Information
 ------------------
 
-brianehlert
+[Brian Ehlert](https://github.com/brianehlert)
+
+[Alessandro Fael Garcia](https://github.com/alessfg)
+
+&copy; [NGINX, Inc.](https://www.nginx.com/) 2020
