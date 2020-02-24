@@ -17,7 +17,8 @@
       desiredState:
         ingress:
           uris:
-            "http://mortgage.acmefinancial.net": {}
+            "http://mortgage.acmefinancial.net":
+              {}
           tls:
             certRef:
               ref: ""

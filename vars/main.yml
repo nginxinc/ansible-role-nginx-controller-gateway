@@ -1,57 +1,63 @@
 ---
-# controller_fqdn:   # fqdn of the controller instance
-# environment_name:  # environment the gateway is associated with
-#
+## All the below variables are REQUIRED
+# controller_fqdn:  # FQDN of the NGINX Controller instance
+# controller_auth_token:  # Authentication token for NGINX Controller
+# environmentName:  # Environment the gateway is associated with
+
+## Structure for gateway details:
+## * Omit settings that are empty / not used.
+## * Use {} for URIS if not providing optional behavior settings. i.e. "http://example.com": {}
+
 # gateway:
 #   metadata:
-#     name: # REQUIRED: name of the gateway
-#     displayName: # friendly display name
-#     description: # complete sentence description
-#     tags: # optional: array of single word tags
+#     name:  # REQUIRED: name of the gateway
+#     displayName:  # friendly display name
+#     description:  # complete sentence description
+#     tags:  # optional: array of single word tags
 #       - tag1
 #       - tag2
 #   desiredState:
 #     ingress:
-#       uris: # array of URIs
-#         "http://example.com": # REQUIRED: one URI for the gateway to service http://www.example.com
+#       uris:  # array of URIs
+#         "http://example.com":  # REQUIRED: one URI for the gateway to service http://www.example.com
 #           matchMethod: PREFIX # optional: PREFIX | REGEX | REGEX_CASE_SENSITIVE | SUFFIX | EXACT
-#           tls: # optional section: per-DNS certificate for URI routing
+#           tls:  # optional section: per-DNS certificate for URI routing
 #             certRef:
-#               ref: # optional: reference to Controller Certificate configuration
-#             protocols: # array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
-#             cipher: # cipher strength
+#               ref:  # optional: reference to Controller Certificate configuration
+#             protocols:  # array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
+#             cipher:  # cipher strength
 #             preferServiceCipherServiceConfigState: # ENABLED | DISABLED
-#             sessionCache: # OFF | NONE | BUILTIN | SHARED
-#       methods: # optional array: POST | GET | PUT | DELETE | PATCH | HEAD | TRACE | OPTIONS | CONNECT
-#       headers: # optional section applies to all URIs
+#             sessionCache:  # OFF | NONE | BUILTIN | SHARED
+#       methods:  # optional array: POST | GET | PUT | DELETE | PATCH | HEAD | TRACE | OPTIONS | CONNECT
+#       headers:  # optional section applies to all URIs
 #         - name: string
-#           nameMatchMethod: # PREFIX | REGEX | REGEX_CASE_SENSITIVE | SUFFIX | EXACT
+#           nameMatchMethod:  # PREFIX | REGEX | REGEX_CASE_SENSITIVE | SUFFIX | EXACT
 #         - value: string
-#           valueMatchMethod: # PREFIX | REGEX | REGEX_CASE_SENSITIVE | SUFFIX | EXACT
-#       http2: # optional applies to all URIs: ENABLED | DISABLED
-#       spdy: # optional applies to all URIs: ENABLED | DISABLED
-#       proxyProtocol: # optional applies to all URIs: ENABLED | DISABLED
-#       setFib: # optional applies to all URIs: int
-#       fastOpen: # optional applies to all URIs: int
-#       backlog: # optional applies to all URIs: int
-#       receiveBufferSize: # optional applies to all URIs: string
-#       sendBufferSize: # optional applies to all URIs: string
-#       acceptFilter: # optional applies to all URIs: DATA_READY | HTTP_READY
-#       deferred: # optional applies to all URIs: ENABLED | DISABLED
-#       isIpv6Only: # optional applies to all URIs: bool
-#       reusePort: # optional applies to all URIs: ENABLED | DISABLED
-#       tls: # optional: applies to all URIs
+#           valueMatchMethod:  # PREFIX | REGEX | REGEX_CASE_SENSITIVE | SUFFIX | EXACT
+#       http2:  # optional applies to all URIs: ENABLED | DISABLED
+#       spdy:  # optional applies to all URIs: ENABLED | DISABLED
+#       proxyProtocol:  # optional applies to all URIs: ENABLED | DISABLED
+#       setFib:  # optional applies to all URIs: int
+#       fastOpen:  # optional applies to all URIs: int
+#       backlog:  # optional applies to all URIs: int
+#       receiveBufferSize:  # optional applies to all URIs: string
+#       sendBufferSize:  # optional applies to all URIs: string
+#       acceptFilter:  # optional applies to all URIs: DATA_READY | HTTP_READY
+#       deferred:  # optional applies to all URIs: ENABLED | DISABLED
+#       isIpv6Only:  # optional applies to all URIs: bool
+#       reusePort:  # optional applies to all URIs: ENABLED | DISABLED
+#       tls:  # optional: applies to all URIs
 #         certRef:
-#           ref: "" # optional: reference to Controller Certificate configuration
-#         protocols: # array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
+#           ref: ""  # optional: reference to Controller Certificate configuration
+#         protocols:  # array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
 #           - TLSv1.3
 #         cipher: string
-#         preferServiceCipherServiceConfigState: # ENABLED | DISABLED
-#         sessionCache: # OFF | NONE | BUILTIN | SHARED
-#       tcpKeepAlive: # optional section
+#         preferServiceCipherServiceConfigState:  # ENABLED | DISABLED
+#         sessionCache:  # OFF | NONE | BUILTIN | SHARED
+#       tcpKeepAlive:  # optional section
 #         idle: string
 #         interval: string
 #         count: 0
-#       placement: # REQUIRED: instance(s) this gateway configuration is applied to (this must exist first)
+#       placement:  # REQUIRED: instance(s) this gateway configuration is applied to (this must exist first)
 #         instanceRefs:
 #           - ref: ""
