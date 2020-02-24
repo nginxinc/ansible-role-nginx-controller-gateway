@@ -1,7 +1,7 @@
 ---
 # controller_fqdn:   # fqdn of the controller instance
 # environment_name:  # environment the gateway is associated with
-
+#
 # gateway:
 #   metadata:
 #     name: # REQUIRED: name of the gateway
@@ -44,7 +44,7 @@
 #         certRef:
 #           ref: "" # optional: reference to Controller Certificate configuration
 #         protocols: # array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
-#         - TLSv1.3
+#           - TLSv1.3
 #         cipher: string
 #         preferServiceCipherServiceConfigState: # ENABLED | DISABLED
 #         sessionCache: # OFF | NONE | BUILTIN | SHARED
