@@ -57,10 +57,10 @@ To use this role you can create a playbook such as the following (let's name it 
           desiredState:
             ingress:
               uris:
-                - "http://mortgage.acmefinancial.net": {}
-                - "https://mortgage.acmefinancial.net": {}
-                - "http://ratecalculator.acmefinancial.net": {}
-                - "https://ratecalculator.acmefinancial.net": {}
+                "http://mortgage.acmefinancial.net": {}
+                "https://mortgage.acmefinancial.net": {}
+                "http://ratecalculator.acmefinancial.net": {}
+                "https://ratecalculator.acmefinancial.net": {}
               tls:
                 certRef:
                   ref: "/services/environments/lending-prod/certs/star.acmefinancial.net"
