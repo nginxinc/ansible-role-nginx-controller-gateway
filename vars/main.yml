@@ -13,15 +13,15 @@
 #   desiredState:
 #     ingress:
 #       uris: # array of URIs
-#         - "http://example.com": # REQUIRED: one URI for the gateway to service http://www.example.com
-#             matchMethod: PREFIX # optional: PREFIX | REGEX | REGEX_CASE_SENSITIVE | SUFFIX | EXACT
-#             tls: # optional section: per-DNS certificate for URI routing
-#               certRef:
-#                 ref: # optional: reference to Controller Certificate configuration
-#               protocols: # array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
-#               cipher: # cipher strength
-#               preferServiceCipherServiceConfigState: # ENABLED | DISABLED
-#               sessionCache: # OFF | NONE | BUILTIN | SHARED
+#         "http://example.com": # REQUIRED: one URI for the gateway to service http://www.example.com
+#           matchMethod: PREFIX # optional: PREFIX | REGEX | REGEX_CASE_SENSITIVE | SUFFIX | EXACT
+#           tls: # optional section: per-DNS certificate for URI routing
+#             certRef:
+#               ref: # optional: reference to Controller Certificate configuration
+#             protocols: # array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
+#             cipher: # cipher strength
+#             preferServiceCipherServiceConfigState: # ENABLED | DISABLED
+#             sessionCache: # OFF | NONE | BUILTIN | SHARED
 #       methods: # optional array: POST | GET | PUT | DELETE | PATCH | HEAD | TRACE | OPTIONS | CONNECT
 #       headers: # optional section applies to all URIs
 #         - name: string
