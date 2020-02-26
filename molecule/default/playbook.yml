@@ -8,7 +8,7 @@
     user_email: ""
     user_password: ""
 
-    environment_name: ""
+    environmentName: ""
     gateway:
       metadata:
         name: lending

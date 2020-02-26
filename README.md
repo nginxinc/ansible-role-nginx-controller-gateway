@@ -56,7 +56,7 @@ To use this role you can create a playbook such as the following (let's name it 
       vars:
         # controller_auth_token: output by previous role in example
         controller_fqdn: "controller.mydomain.com"
-        environment_name: "production-us-west"
+        environmentName: "production-us-west"
         gateway:
           metadata:
             name: lending

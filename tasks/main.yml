@@ -50,10 +50,10 @@
       Cookie: "{{ controller_auth_token }}"
   register: gateway_current_status
   until: (gateway_current_status is defined) and
-         (not gateway_current_status.json.currentStatus.state.selfConfigState.isConfiguring)
+         (not gateway_current_status.json.currentStatus.state.selfConfigState.isConfiguring | bool)
   retries: 50
   delay: 2
-  failed_when: gateway_current_status.json.currentStatus.state.selfConfigState.isError
+  failed_when: gateway_current_status.json.currentStatus.state.selfConfigState.isError | bool
 
 - name: Show gateway details
   debug:
