@@ -12,7 +12,7 @@
 
 - name: Form the gateway url
   set_fact:
-    gateway_url: "https://{{ controller_fqdn }}/{{ api_version }}/services/environments/{{ environment_name }}/gateways/{{ gateway.name }}"
+    gateway_url: "https://{{ controller_fqdn }}/{{ api_version }}/services/environments/{{ environmentName }}/gateways/{{ gateway.metadata.name }}"
 
 - name: Upsert gateway (create if absent, change if present)
   uri:
