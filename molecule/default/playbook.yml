@@ -3,10 +3,12 @@
   hosts: all
 
   vars:
-    controller_fqdn: ""
-    api_key: ""
-    user_email: ""
-    user_password: ""
+    controller:
+      fqdn: ""
+      api_key: ""
+      user_email: ""
+      user_password: ""
+      validate_certs: false
 
     environmentName: ""
     gateway:
