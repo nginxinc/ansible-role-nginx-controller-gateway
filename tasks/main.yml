@@ -3,36 +3,36 @@
   assert:
     that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
   loop:
-    - controller.fqdn
-    - controller.auth_token
-    - environmentName
-    - gateway.metadata.name
-    - gateway.ingress.uris
-    - gateway.ingress.placement.instanceRefs
+    - nginx_controller_fqdn
+    - nginx_controller_auth_token
+    - nginx_controller_environmentName
+    - nginx_controller_gateway.metadata.name
+    - nginx_controller_gateway.ingress.uris
+    - nginx_controller_gateway.ingress.placement.instanceRefs
 
 - name: Form the gateway url
   set_fact:
-    gateway_url: "https://{{ controller.fqdn }}/{{ api_version }}/services/environments/{{ environmentName }}/gateways/{{ gateway.metadata.name }}"
+    nginx_controller_gateway_url: "https://{{ nginx_controller_fqdn }}/{{ nginx_controller_api_version }}/services/environments/{{ nginx_controller_environmentName }}/gateways/{{ nginx_controller_gateway.metadata.name }}"
 
 - name: Upsert gateway (create if absent, change if present)
   uri:
-    url: "{{ gateway_url }}"
+    url: "{{ nginx_controller_gateway_url }}"
     method: "PUT"
-    body: "{{ gateway }}"
+    body: "{{ nginx_controller_gateway }}"
     body_format: json
     status_code:
       - 200
       - 201
       - 202
     return_content: yes
-    validate_certs: "{{ controller.validate_certs | default(false) }}"
+    validate_certs: "{{ nginx_controller_validate_certs | default(false) }}"
     headers:
-      Cookie: "{{ controller.auth_token }}"
-  register: gateway_status
+      Cookie: "{{ nginx_controller_auth_token }}"
+  register: nginx_controller_gateway_status
 
 - name: Show gateway creation status
   debug:
-    msg: "{{ gateway_status }}"
+    msg: "{{ nginx_controller_gateway_status }}"
 
 - name: Pause while system initiates changes
   pause:
@@ -40,22 +40,22 @@
 
 - name: Confirm component is provisioned and not errored
   uri:
-    url: "{{ gateway_url }}"
+    url: "{{ nginx_controller_gateway_url }}"
     method: "GET"
     body_format: json
     status_code:
       - 200
     return_content: yes
-    validate_certs: "{{ controller.validate_certs | default(false) }}"
+    validate_certs: "{{ nginx_controller_validate_certs | default(false) }}"
     headers:
-      Cookie: "{{ controller.auth_token }}"
-  register: gateway_current_status
-  until: (gateway_current_status is defined) and
-         (not gateway_current_status.json.currentStatus.state.selfConfigState.isConfiguring | bool)
+      Cookie: "{{ nginx_controller_auth_token }}"
+  register: nginx_controller_gateway_current_status
+  until: (nginx_controller_gateway_current_status is defined) and
+         (not nginx_controller_gateway_current_status.json.currentStatus.state.selfConfigState.isConfiguring | bool)
   retries: 50
   delay: 2
-  failed_when: gateway_current_status.json.currentStatus.state.selfConfigState.isError | bool
+  failed_when: nginx_controller_gateway_current_status.json.currentStatus.state.selfConfigState.isError | bool
 
 - name: Show gateway details
   debug:
-    msg: "{{ gateway_current_status }}"
+    msg: "{{ nginx_controller_gateway_current_status }}"

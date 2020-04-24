@@ -13,17 +13,17 @@ Role Variables
 
 ### Required Variables
 
-`controller.fqdn` - FQDN of the NGINX Controller instance
+`nginx_controller_fqdn` - FQDN of the NGINX Controller instance
 
-`controller.auth_token` - Authentication token for NGINX Controller
+`nginx_controller_auth_token` - Authentication token for NGINX Controller
 
-`environmentName` - Environment the gateway is associated with
+`nginx_controller_environmentName` - Environment the gateway is associated with
 
-`gateway.metadata.name` - Name of the gateway
+`nginx_controller_gateway.metadata.name` - Name of the gateway
 
-`gateway.ingress.uris` - URI for the gateway to service
+`nginx_controller_gateway.ingress.uris` - URI for the gateway to service
 
-`gateway.ingress.placement.instanceRefs` - Instance(s) this gateway configuration is applied to (these must exist first)
+`nginx_controller_gateway.ingress.placement.instanceRefs` - Instance(s) this gateway configuration is applied to (these must exist first)
 
 ### Template Variables
 
@@ -42,25 +42,23 @@ To use this role you can create a playbook such as the following (let's name it 
   gather_facts: no
 
   vars:
-    controller:
-      user_email: "user@example.com"
-      user_password: "mySecurePassword"
-      fqdn: "controller.mydomain.com"
-      validate_certs: false
+    nginx_controller_user_email: "user@example.com"
+    nginx_controller_user_password: "mySecurePassword"
+    nginx_controller_fqdn: "controller.mydomain.com"
+    nginx_controller_validate_certs: false
 
   tasks:
     - name: Retrieve the NGINX Controller auth token
       include_role:
-        name: nginxinc.nginx-controller-generate-token
+        name: nginxinc.nginx_controller_generate_token
 
     - name: Create a gateway
       include_role:
-        name: nginxinc.nginx-controller-gateway
+        name: nginxinc.nginx_controller_gateway
       vars:
         # controller.auth_token: output by previous role in example
-        controller.fqdn: "controller.mydomain.com"
-        environmentName: "production-us-west"
-        gateway:
+        nginx_controller_environmentName: "production-us-west"
+        nginx_controller_gateway:
           metadata:
             name: lending
             displayName: "Shared Public Lending BU Gateway"

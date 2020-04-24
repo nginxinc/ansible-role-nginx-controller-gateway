@@ -1,16 +1,15 @@
 ---
 ## All the below variables are REQUIRED
 
-# controller:
-#   fqdn:  # FQDN of the NGINX Controller instance
-#   auth_token:  # Authentication token for NGINX Controller
-# environmentName:  # Environment the gateway is associated with
+# nginx_controller_fqdn:  # FQDN of the NGINX Controller instance
+# nginx_controller_auth_token:  # Authentication token for NGINX Controller
+# nginx_controller_environmentName:  # Environment the gateway is associated with
 
 ## Structure for gateway details:
 ## * Omit settings that are empty / not used.
 ## * Use {} for URIS if not providing OPTIONAL behavior settings. i.e. "http://example.com": {}
 
-# gateway:
+# nginx_controller_gateway:
 #   metadata:
 #     name:  # REQUIRED: Name of the gateway
 #     displayName:  # Friendly display name
