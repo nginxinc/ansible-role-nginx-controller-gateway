@@ -46,6 +46,7 @@
     status_code:
       - 200
       - 201
+      - 202
     return_content: yes
     validate_certs: "{{ nginx_controller_validate_certs | default(false) }}"
     headers:
