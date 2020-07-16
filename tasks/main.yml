@@ -42,7 +42,6 @@
   uri:
     url: "{{ nginx_controller_gateway_url }}"
     method: "GET"
-    body_format: json
     status_code:
       - 200
       - 201
