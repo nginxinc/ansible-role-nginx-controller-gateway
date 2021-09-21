@@ -3,8 +3,9 @@ galaxy_info:
   author: Brian Ehlert
   description: A role to upsert (create and update) gateways in NGINX Controller to support ingress for Applications and Components.
   company: F5 Networks, Inc.
-  name: nginx_controller_gateway
-  
+  role_name: nginx_controller_gateway
+  namespace: nginxinc
+
   license: Apache License, Version 2.0
 
   min_ansible_version: 2.7
