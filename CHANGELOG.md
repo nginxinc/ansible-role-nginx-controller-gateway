@@ -6,3 +6,7 @@ ENHANCEMENTS:
 
 *   Implement GitHub Actions CI/CD workflow for repo.
 *   Add Molecule tests for role.
+
+BUG FIXES:
+
+*   The variable assertions were not working as implemented.
