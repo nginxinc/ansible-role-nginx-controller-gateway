@@ -55,12 +55,12 @@
                     https://www.example.com: {}
                 state:
                   selfConfigState:
-                    configured: 1
-                    configuring: 0
+                    configured: 0
+                    configuring: 1
                     deleting: 0
                     error: 0
-                    isConfigured: true
-                    isConfiguring: false
+                    isConfigured: false
+                    isConfiguring: true
                     isDeleting: false
                     isError: false
                     total: 1
