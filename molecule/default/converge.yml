@@ -3,6 +3,9 @@
   hosts: controllers
 
   vars:
+    nginx_controller_api_key: ""
+    nginx_controller_user_email: ""
+    nginx_controller_user_password: ""
     nginx_controller_validate_certs: false
     nginx_controller_fqdn: mock-server.molecule-test:1080
     nginx_controller_auth_token: "ABC123"
