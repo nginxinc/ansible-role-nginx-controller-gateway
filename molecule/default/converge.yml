@@ -1,0 +1,33 @@
+---
+- name: Converge
+  hosts: controllers
+
+  vars:
+    nginx_controller_validate_certs: false
+    nginx_controller_fqdn: mock-server.molecule-test:1080
+    nginx_controller_auth_token: "ABC123"
+    nginx_controller_environmentName: "production"
+
+    nginx_controller_gateway:
+      metadata:
+        name: "www.example.com"
+        displayName: "Example Gateway"
+        description: "Example Gateway"
+      desiredState:
+        ingress:
+          uris:
+            "http://www.example.com":
+              {}
+          tls:
+            certRef:
+              ref: ""
+            protocols:
+              - ""
+          placement:
+            instanceRefs:
+              - ref: ""
+
+  tasks:
+    - name: Call Gateway Role
+      include_role:
+        name: ansible-role-nginx-controller-gateway

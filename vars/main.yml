@@ -22,9 +22,9 @@
 #       uris:  # Array of URIs
 #         "http://example.com":  # REQUIRED: One URI for the gateway to service http://www.example.com
 #           matchMethod: PREFIX # OPTIONAL: PREFIX | REGEX | REGEX_CASE_SENSITIVE | SUFFIX | EXACT
-#           tls:  # OPTIONAL: Per DNS certificate for URI routing
+#           tls:  # OPTIONAL: Per DNS gateway for URI routing
 #             certRef:
-#               ref:  # OPTIONAL: reference to Controller Certificate configuration
+#               ref:  # OPTIONAL: reference to Controller Gateway configuration
 #             protocols:  # Array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
 #             cipher:  # Cipher strength
 #             preferServiceCipherServiceConfigState: # ENABLED | DISABLED
@@ -49,7 +49,7 @@
 #       reusePort:  # OPTIONAL (Applies to all URIs): ENABLED | DISABLED
 #       tls:  # OPTIONAL: (Applies to all URIs)
 #         certRef:
-#           ref: ""  # OPTIONAL: Reference to Controller Certificate configuration
+#           ref: ""  # OPTIONAL: Reference to Controller Gateway configuration
 #         protocols:  # Array: TLSv1 | TLSv1.1 | TLSv1.2 | TLSv1.3 | SSLv2 | SSLv3
 #           - TLSv1.3
 #         cipher: string
