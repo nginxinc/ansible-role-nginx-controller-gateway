@@ -1,6 +1,8 @@
 NGINX Controller Gateway
 ========================
 
+# This repository has been archived. There will likely be no further development on the project and security vulnerabilities may be unaddressed.
+
 Upsert (create and update) gateways in NGINX Controller to support ingress for Applications and Components.
 
 Requirements
